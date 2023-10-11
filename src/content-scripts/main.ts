@@ -22,13 +22,35 @@ const removeCssLink = () => {
   document.getElementById(CSS_LINK_ID)?.remove();
 };
 
+const handleEnableSwap = async () => {
+  const toggledEnableSwap = (await getStorage(["enableSwap"])).enableSwap;
+  if (toggledEnableSwap) {
+    appendCssLink();
+    hljs.highlightAll();
+  } else {
+    removeCssLink();
+    // TODO: reloadなしで元に戻す方法
+    location.reload();
+  }
+};
+
+const init = async () => {
+  const enableSwap = (await getStorage(["enableSwap"])).enableSwap;
+  if (enableSwap) {
+    appendCssLink();
+    hljs.highlightAll();
+  }
+};
+
 runtime.onMessage.addListener((message) => {
   switch (message) {
     case "update-theme":
       removeCssLink();
       appendCssLink();
+      break;
+    case "toggle-enable-swap":
+      handleEnableSwap();
   }
 });
 
-appendCssLink();
-hljs.highlightAll();
+init();

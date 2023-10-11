@@ -1,10 +1,11 @@
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { themes, Theme } from "../config/themes";
 import { useEffect, useState } from "react";
-import { getStorage, setStorage } from "../utils/chrome";
+import { getStorage, sendMessageToContents, setStorage } from "../utils/chrome";
 import { StorageValue } from "../types";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { FromPopup } from "../config";
+import Header from "../components/Header";
 
 const Preview = ({ themeName }: { themeName: string }) => {
   const [themeStyle, setThemeStyle] = useState();
@@ -54,60 +55,62 @@ const SelectTheme = () => {
   };
 
   const updateContentPage = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs[0].id) {
-        console.log("tab", tabs[0].id);
-        chrome.tabs.sendMessage(tabs[0].id, FromPopup.update_theme);
-      }
-    });
+    sendMessageToContents(FromPopup.update_theme);
   };
   return (
-    <div className="w-[400px] flex flex-col p-4 space-y-4">
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="syntaxSelect" className="text-lg font-bold">
-          Select Theme
-        </label>
-        <select
-          id="syntaxSelect"
-          className="p-2 border rounded"
-          onChange={(e) => {
-            handleChange(e);
-          }}
-          value={selectedTheme}
+    <div className="w-[400px]">
+      <Header />
+      <div className="flex flex-col p-4 space-y-4">
+        <div className="flex flex-col space-y-2">
+          <label htmlFor="syntaxSelect" className="text-lg font-bold">
+            Select Theme
+          </label>
+          <select
+            id="syntaxSelect"
+            className="p-2 border rounded"
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            value={selectedTheme}
+          >
+            {themes.map((theme, index) => (
+              <option key={index} value={theme}>
+                {theme}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex flex-col space-y-2">
+          <label htmlFor="uploadCSS" className="text-lg font-bold">
+            Upload Custom CSS
+          </label>
+          <input
+            type="file"
+            accept=".css"
+            id="uploadCSS"
+            className="p-2 border rounded"
+          />
+          <button className="p-2 bg-blue-500 text-white rounded">Upload</button>
+        </div>
+
+        <div className="flex flex-col space-y-2">
+          <label className="text-lg font-bold">Preview</label>
+          {selectedTheme && <Preview themeName={selectedTheme} />}
+        </div>
+
+        <button
+          onClick={handleApply}
+          className="p-2 bg-green-500 text-white rounded"
+          disabled={isApplying}
         >
-          {themes.map((theme, index) => (
-            <option key={index} value={theme}>
-              {theme}
-            </option>
-          ))}
-        </select>
+          {isApplying ? (
+            <LoadingSpinner className="block mx-auto" />
+          ) : (
+            <>Apply</>
+          )}
+        </button>
       </div>
-
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="uploadCSS" className="text-lg font-bold">
-          Upload Custom CSS
-        </label>
-        <input
-          type="file"
-          accept=".css"
-          id="uploadCSS"
-          className="p-2 border rounded"
-        />
-        <button className="p-2 bg-blue-500 text-white rounded">Upload</button>
-      </div>
-
-      <div className="flex flex-col space-y-2">
-        <label className="text-lg font-bold">Preview</label>
-        {selectedTheme && <Preview themeName={selectedTheme} />}
-      </div>
-
-      <button
-        onClick={handleApply}
-        className="p-2 bg-green-500 text-white rounded"
-        disabled={isApplying}
-      >
-        {isApplying ? <LoadingSpinner className="block mx-auto" /> : <>Apply</>}
-      </button>
     </div>
   );
 };

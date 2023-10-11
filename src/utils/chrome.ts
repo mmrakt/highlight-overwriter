@@ -19,6 +19,14 @@ const setStorage = async (value: Partial<StorageValue>): Promise<void> => {
   });
 };
 
+const sendMessageToContents = (message: string) => {
+  tabs.query({ active: true, currentWindow: true }, (targetTabs) => {
+    if (targetTabs[0].id) {
+      tabs.sendMessage(targetTabs[0].id, message);
+    }
+  });
+};
+
 export {
   runtime,
   commands,
@@ -28,4 +36,5 @@ export {
   windows,
   getStorage,
   setStorage,
+  sendMessageToContents,
 };

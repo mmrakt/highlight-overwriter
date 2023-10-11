@@ -10,7 +10,7 @@ const manifest = defineManifest({
   action: { default_popup: "popup.html" },
   content_scripts: [
     {
-      matches: ["https://zenn.dev/dotdotdot/articles/*", "https://qiita.com/*"],
+      matches: ["<all_urls>"],
       js: ["src/content-scripts/main.ts"],
     },
   ],
