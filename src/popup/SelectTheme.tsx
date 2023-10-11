@@ -1,15 +1,23 @@
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { themes, Theme } from "../config/themes";
 import { useEffect, useState } from "react";
+import { getStorage, setStorage } from "../utils/chrome";
+import { StorageValue } from "../types";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { FromPopup } from "../config";
 
 const Preview = ({ themeName }: { themeName: string }) => {
   const [themeStyle, setThemeStyle] = useState();
   useEffect(() => {
     const loadThemeStyle = async () => {
-      const theme = await import(
-        `../../node_modules/react-syntax-highlighter/dist/esm/styles/hljs/${themeName}.js`
-      );
-      setThemeStyle(theme.default);
+      try {
+        const theme = await import(
+          `../../node_modules/react-syntax-highlighter/dist/esm/styles/hljs/${themeName}.js`
+        );
+        setThemeStyle(theme.default);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     loadThemeStyle();
@@ -21,20 +29,43 @@ const Preview = ({ themeName }: { themeName: string }) => {
   );
 };
 
-const Popup = () => {
-  const defaultTheme = "vs";
-  const [selectedTheme, setSelectedTheme] = useState<Theme>(defaultTheme);
+const SelectTheme = () => {
+  const [selectedTheme, setSelectedTheme] = useState<Theme>("");
+  const [isApplying, setIsApplying] = useState(false);
+
+  useEffect(() => {
+    getStorage(["themeName"]).then((data: StorageValue) => {
+      setSelectedTheme(data.themeName as Theme);
+    });
+  }, []);
 
   const handleChange = (e: any) => {
     if (e.target.value) {
       setSelectedTheme(e.target.value);
     }
   };
+  const handleApply = () => {
+    setIsApplying(true);
+    setStorage({ themeName: selectedTheme }).then(() => {
+      setIsApplying(false);
+
+      updateContentPage();
+    });
+  };
+
+  const updateContentPage = () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0].id) {
+        console.log("tab", tabs[0].id);
+        chrome.tabs.sendMessage(tabs[0].id, FromPopup.update_theme);
+      }
+    });
+  };
   return (
     <div className="w-[400px] flex flex-col p-4 space-y-4">
       <div className="flex flex-col space-y-2">
         <label htmlFor="syntaxSelect" className="text-lg font-bold">
-          Select Syntax Highlight
+          Select Theme
         </label>
         <select
           id="syntaxSelect"
@@ -42,7 +73,7 @@ const Popup = () => {
           onChange={(e) => {
             handleChange(e);
           }}
-          defaultValue={selectedTheme}
+          value={selectedTheme}
         >
           {themes.map((theme, index) => (
             <option key={index} value={theme}>
@@ -67,12 +98,18 @@ const Popup = () => {
 
       <div className="flex flex-col space-y-2">
         <label className="text-lg font-bold">Preview</label>
-        <Preview themeName={selectedTheme} />
+        {selectedTheme && <Preview themeName={selectedTheme} />}
       </div>
 
-      <button className="p-2 bg-green-500 text-white rounded">Apply</button>
+      <button
+        onClick={handleApply}
+        className="p-2 bg-green-500 text-white rounded"
+        disabled={isApplying}
+      >
+        {isApplying ? <LoadingSpinner className="block mx-auto" /> : <>Apply</>}
+      </button>
     </div>
   );
 };
 
-export default Popup;
+export default SelectTheme;

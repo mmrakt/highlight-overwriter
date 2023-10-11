@@ -74,3 +74,5 @@ export const themes = [
 ] as const;
 
 export type Theme = (typeof themes)[number];
+
+export const DEFAULT_THEME_NAME = "monokai";
