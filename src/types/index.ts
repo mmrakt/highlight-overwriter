@@ -15,3 +15,7 @@ export type Message = {
 };
 
 export type DisplayPage = "selectTheme" | "setting";
+
+export type IgnoreList = {
+  value: string;
+}[];

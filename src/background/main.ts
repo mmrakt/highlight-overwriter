@@ -8,7 +8,7 @@ runtime.onInstalled.addListener(async () => {
       setStorage({
         themeName: DEFAULT_THEME_NAME,
         enableSwap: true,
-        ignoreList: [""],
+        ignoreList: ["http://hogehoge", "https://fugafuga", "http://piyopiyo"],
       });
     }
   });
