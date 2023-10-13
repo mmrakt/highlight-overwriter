@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import { getStorage, setStorage } from "../utils/chrome";
+import { getStorage, sendMessageToContents, setStorage } from "../utils/chrome";
 import { toIgnoreListOfForm, toIgnoreListOfStorage } from "../utils";
-import { IgnoreList } from "../types";
+import { IgnoreList as IgnoreListType } from "../types";
+import { FromPopup } from "../config";
 
 const IgnoreList = () => {
   const [ignoreList, setIgnoreList] = useState<string[] | null>(null);
@@ -30,38 +31,33 @@ const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
     control,
     watch,
     reset,
-    formState: { errors, isDirty },
+    formState: { isDirty },
   } = useForm({
     defaultValues: {
       ignoreList: [...registeredIgnoreList, { value: "" }],
     },
   });
-  const { fields, prepend, append, remove, replace } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "ignoreList",
   });
-  const onSubmit = ({ ignoreList }: { ignoreList: IgnoreList }) => {
+  const onSubmit = ({ ignoreList }: { ignoreList: IgnoreListType }) => {
     if (!isDirty) return;
 
-    // setStorage(toIgnoreListOfStorage(ignoreList));
-  };
-
-  const handleInputEnter = (e: any, id: string) => {
-    if (e.key !== "Enter") return;
-
-    const findIndex = fields.findIndex((field) => field.id === id);
-    if (!findIndex) return;
-
-    // 最後尾のfieldが空でない場合
-    // TODO: watch()以外で最新のvalueを参照する方法調べる
-    if (
-      findIndex <= 0 ||
-      fields.length !== findIndex + 1 ||
-      watch(`ignoreList.${findIndex}.value`) === ""
-    )
-      return;
-
-    append({ value: "" });
+    getStorage(["ignoreList"]).then(({ ignoreList }) => {
+      console.log(ignoreList);
+    });
+    try {
+      setStorage({
+        ignoreList: toIgnoreListOfStorage(ignoreList).slice(
+          0,
+          ignoreList.length - 1
+        ),
+      });
+      sendMessageToContents(FromPopup.update_ignore_list);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleInputBlur = (index: number) => {
@@ -87,9 +83,6 @@ const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
               type="text"
               key={field.id}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full px-2 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              // onKeyDown={(e) => {
-              //   handleInputEnter(e, field.id);
-              // }}
               {...register(`ignoreList.${index}.value`)}
               onBlur={() => {
                 handleInputBlur(index);

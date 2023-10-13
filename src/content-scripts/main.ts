@@ -1,5 +1,6 @@
 import hljs from "highlight.js";
 import { getStorage, runtime } from "../utils/chrome";
+import { FromPopup } from "../config";
 
 const CSS_LINK_ID = "syntax-swap-style";
 const createCssLink = async () => {
@@ -34,15 +35,32 @@ const handleEnableSwap = async () => {
   }
 };
 
+const isIgnoreSite = async () => {
+  const ignoreList = (await getStorage(["ignoreList"])).ignoreList;
+  const currentUrl = location.href;
+  let isIgnoreSite = false;
+  for (const ignore of ignoreList) {
+    const ignoreUrl = new URL(ignore);
+    let ignoreStr = ignoreUrl.hostname + ignoreUrl.pathname;
+    ignoreStr = ignoreStr.replace("*", ".*");
+    const pattern = new RegExp(`(http|https)://${ignoreStr}`);
+    if (pattern.test(currentUrl)) {
+      isIgnoreSite = true;
+    }
+  }
+
+  return isIgnoreSite;
+};
+
 const init = async () => {
   const enableSwap = (await getStorage(["enableSwap"])).enableSwap;
-  if (enableSwap) {
+  if (enableSwap && !(await isIgnoreSite())) {
     appendCssLink();
     hljs.highlightAll();
   }
 };
 
-runtime.onMessage.addListener((message) => {
+runtime.onMessage.addListener(async (message: FromPopup) => {
   switch (message) {
     case "update-theme":
       removeCssLink();
@@ -50,6 +68,13 @@ runtime.onMessage.addListener((message) => {
       break;
     case "toggle-enable-swap":
       handleEnableSwap();
+      break;
+    case "update-ignore-list":
+      if (await isIgnoreSite()) {
+        removeCssLink();
+        location.reload();
+      }
+      break;
   }
 });
 
