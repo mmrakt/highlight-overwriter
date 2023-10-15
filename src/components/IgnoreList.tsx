@@ -4,6 +4,7 @@ import { getStorage, sendMessageToContents, setStorage } from "../utils/chrome";
 import { toIgnoreListOfForm, toIgnoreListOfStorage } from "../utils";
 import { IgnoreList as IgnoreListType } from "../types";
 import { FromPopup } from "../config";
+import Button from "./Button";
 
 const IgnoreList = () => {
   const [ignoreList, setIgnoreList] = useState<string[] | null>(null);
@@ -73,10 +74,10 @@ const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
 
   return (
     <div className="flex justify-between">
-      <label htmlFor="syntaxSelect" className="text-md font-bold">
+      <label htmlFor="ignoreList" className="text-md font-bold">
         Ignore Site List
       </label>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
         <div className="flex flex-col">
           {fields.map((field, index) => (
             <input
@@ -90,13 +91,8 @@ const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
             />
           ))}
         </div>
-        <div className="mt-2 ">
-          <button
-            type="submit"
-            className=" rounded-md px-2 py-1 bg-blue-700 text-white hover:bg-blue-500"
-          >
-            Save
-          </button>
+        <div className="mt-2 self-end">
+          <Button text="Save" type="submit" />
         </div>
       </form>
     </div>

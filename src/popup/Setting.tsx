@@ -12,15 +12,15 @@ const Setting = () => {
     });
   }, []);
   const handleChangeEnableSwap = () => {
-    setEnableSwap(!enableSwap);
-    setStorage({ enableSwap: !enableSwap });
-    sendMessageToContents(FromPopup.toggle_enable_swap);
+    // setEnableSwap(!enableSwap);
+    // setStorage({ enableSwap: !enableSwap });
+    // sendMessageToContents(FromPopup.toggle_enable_swap);
   };
 
   return (
-    <div className="w-[400px]">
+    <div className="w-[350px]">
       <Header />
-      <div className=" flex flex-col p-4 space-y-4">
+      <div className=" flex flex-col p-4 space-y-6">
         <div className="flex justify-between">
           <label htmlFor="syntaxSelect" className="text-md font-bold">
             Enable Syntax Swap
@@ -34,7 +34,7 @@ const Setting = () => {
                   onChange={handleChangeEnableSwap}
                   defaultChecked={enableSwap}
                 />
-                <div className="border-color peer h-4 w-10 rounded-full bg-gray-400 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none dark:bg-gray-700"></div>
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-default"></div>{" "}
               </>
             )}
           </label>
