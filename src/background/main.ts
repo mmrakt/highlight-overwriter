@@ -3,8 +3,8 @@ import { runtime, getStorage, setStorage } from "../utils/chrome";
 
 // installed event
 runtime.onInstalled.addListener(async () => {
-  getStorage(["themeName"]).then((data) => {
-    if (!data) {
+  getStorage(["themeName"]).then(({ themeName }) => {
+    if (!themeName) {
       setStorage({
         themeName: DEFAULT_THEME_NAME,
         enableSwap: true,

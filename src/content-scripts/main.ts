@@ -3,6 +3,9 @@ import { getStorage, runtime } from "../utils/chrome";
 import { FromPopup } from "../config";
 
 const CSS_LINK_ID = "syntax-swap-style";
+
+hljs.configure({ ignoreUnescapedHTML: true });
+
 const createCssLink = async () => {
   const cssLink = document.createElement("link");
   cssLink.type = "text/css";
@@ -37,9 +40,13 @@ const handleEnableSwap = async () => {
 
 const isIgnoreSite = async () => {
   const ignoreList = (await getStorage(["ignoreList"])).ignoreList;
+  if (ignoreList.length === 1 && ignoreList[0] === "") return false;
+
   const currentUrl = location.href;
   let isIgnoreSite = false;
   for (const ignore of ignoreList) {
+    if (!isValidUrl(ignore)) break;
+
     const ignoreUrl = new URL(ignore);
     let ignoreStr = ignoreUrl.hostname + ignoreUrl.pathname;
     ignoreStr = ignoreStr.replace("*", ".*");
@@ -50,6 +57,11 @@ const isIgnoreSite = async () => {
   }
 
   return isIgnoreSite;
+};
+
+const isValidUrl = (url: string) => {
+  const pattern = /^(http|https):\/\/.*$/;
+  return pattern.test(url);
 };
 
 const init = async () => {

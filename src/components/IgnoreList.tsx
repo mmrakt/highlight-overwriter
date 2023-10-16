@@ -27,6 +27,11 @@ type Props = {
 };
 
 const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
+  const isEmptyIgnoreList = () => {
+    return (
+      registeredIgnoreList.length === 1 && registeredIgnoreList[0].value === ""
+    );
+  };
   const {
     register,
     handleSubmit,
@@ -35,7 +40,9 @@ const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
     formState: { isDirty },
   } = useForm({
     defaultValues: {
-      ignoreList: [...registeredIgnoreList, { value: "" }],
+      ignoreList: isEmptyIgnoreList()
+        ? [...registeredIgnoreList]
+        : [...registeredIgnoreList, { value: "" }],
     },
   });
   const { fields, append, remove } = useFieldArray({

@@ -5,8 +5,14 @@ import { crx, defineManifest } from "@crxjs/vite-plugin";
 const manifest = defineManifest({
   manifest_version: 3,
   name: "Syntax Swap",
-  description: "Overwrite syntax highlight",
+  description:
+    "Overwrite the syntax highlighting of code blocks on a web page with your favorite theme",
   version: "0.1.0",
+  icons: {
+    "16": "public/img/icon-16.png",
+    "48": "public/img/icon-48.png",
+    "128": "public/img/icon-128.png",
+  },
   action: { default_popup: "popup.html" },
   content_scripts: [
     {
@@ -18,7 +24,7 @@ const manifest = defineManifest({
     service_worker: "src/background/main.ts",
     type: "module",
   },
-  permissions: ["storage", "tabs", "notifications"],
+  permissions: ["storage", "tabs"],
 });
 
 export default defineConfig({
