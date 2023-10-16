@@ -62,7 +62,7 @@ const SelectTheme = () => {
   return (
     <div className="w-[350px]">
       <Header />
-      <div className="flex flex-col p-4 space-y-4">
+      <div className="flex flex-col p-4 gap-2">
         <SelectboxRow
           labelText="Theme"
           options={themes}
@@ -75,11 +75,11 @@ const SelectTheme = () => {
           // handleChange={handleChange}
         />
 
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col mt-4">
           {selectedTheme && <Preview themeName={selectedTheme} />}
         </div>
 
-        <div className="self-end">
+        <div className="self-end mt-2">
           <Button text="Apply" type="button" handleClick={handleApply} />
         </div>
       </div>

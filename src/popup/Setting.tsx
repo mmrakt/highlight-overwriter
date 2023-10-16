@@ -22,7 +22,7 @@ const Setting = () => {
       <Header />
       <div className=" flex flex-col p-4 space-y-6">
         <div className="flex justify-between">
-          <label htmlFor="syntaxSelect" className="text-md font-bold">
+          <label htmlFor="syntaxSelect" className="text-sm">
             Enable Syntax Swap
           </label>
           <label className="relative inline-flex cursor-pointer items-center">

@@ -8,7 +8,7 @@ const LeftArrow = ({ className }: Props) => {
   return (
     <div
       className={twMerge(
-        "icon-border-color block h-3 w-3 border-gray-800 rotate-45 border-b-[2px] border-l-[2px]",
+        "icon-border block h-3 w-3 rotate-45 border-b-[2px] border-l-[2px]",
         className
       )}
     ></div>

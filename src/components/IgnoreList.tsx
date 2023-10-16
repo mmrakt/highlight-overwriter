@@ -74,7 +74,7 @@ const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
 
   return (
     <div className="flex justify-between">
-      <label htmlFor="ignoreList" className="text-md font-bold">
+      <label htmlFor="ignoreList" className="text-sm">
         Ignore Site List
       </label>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">

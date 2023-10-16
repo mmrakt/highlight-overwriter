@@ -6,7 +6,7 @@ const Cogwheel = () => {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="icon-color icon-color-hovered h-6 w-6"
+      className="icon h-6 w-6"
     >
       <path
         strokeLinecap="round"

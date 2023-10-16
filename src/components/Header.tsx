@@ -25,7 +25,7 @@ const Header = () => {
       </span>
       {displayPage === "setting" && (
         <button
-          className="absolute left-4 top-4"
+          className="absolute left-3 top-3 p-1 icon-border"
           onClick={() => {
             $displayPage.set("selectTheme");
           }}
