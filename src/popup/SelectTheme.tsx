@@ -8,6 +8,7 @@ import Header from "../components/Header";
 import SelectboxRow from "../components/SelectboxRow";
 import Button from "../components/Button";
 import { Language, languages, snippets } from "../config/languages";
+import Github from "../components/Github";
 
 type Preview = {
   themeName: Theme;
@@ -84,7 +85,7 @@ const SelectTheme = () => {
   return (
     <div className="body">
       <Header />
-      <div className="flex flex-col p-4 gap-2">
+      <div className="flex flex-col p-4 gap-2 relative">
         <SelectboxRow
           labelText="Theme"
           options={themes}
@@ -109,6 +110,9 @@ const SelectTheme = () => {
 
         <div className="self-end mt-2">
           <Button text="Apply" type="button" handleClick={handleApply} />
+        </div>
+        <div className="absolute bottom-4 left-4">
+          <Github />
         </div>
       </div>
     </div>

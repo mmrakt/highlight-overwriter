@@ -102,7 +102,7 @@ const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
             />
           ))}
         </div>
-        <div className="mt-2 self-end">
+        <div className="mt-4 self-end">
           <Button text="Save" type="submit" />
         </div>
       </form>

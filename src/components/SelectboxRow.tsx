@@ -16,7 +16,7 @@ const SelectboxRow = ({
   selectedValue,
 }: Props) => {
   return (
-    <div className="flex flex-row items-center space-y-2 justify-between">
+    <div className="flex flex-row items-center justify-between">
       <label htmlFor="syntaxSelect" className="text-sm">
         {labelText}
       </label>

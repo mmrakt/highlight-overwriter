@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { getStorage, sendMessageToContents, setStorage } from "../utils/chrome";
 import { FromPopup } from "../config";
 import IgnoreList from "../components/IgnoreList";
+import Github from "../components/Github";
 
 const Setting = () => {
   const [enableSwap, setEnableSwap] = useState<boolean | null>(null);
@@ -18,7 +19,7 @@ const Setting = () => {
   };
 
   return (
-    <div className="body">
+    <div className="body relative">
       <Header />
       <div className=" flex flex-col p-4 space-y-6">
         <div className="flex justify-between">
@@ -40,6 +41,9 @@ const Setting = () => {
           </label>
         </div>
         <IgnoreList />
+      </div>
+      <div className="absolute bottom-4 left-4">
+        <Github />
       </div>
     </div>
   );
