@@ -64,9 +64,13 @@ const isValidUrl = (url: string) => {
   return pattern.test(url);
 };
 
+const hasCodeBlock = () => {
+  return !!document.querySelector("pre code");
+};
+
 const init = async () => {
   const enableSwap = (await getStorage(["enableSwap"])).enableSwap;
-  if (enableSwap && !(await isIgnoreSite())) {
+  if (enableSwap && !(await isIgnoreSite()) && hasCodeBlock()) {
     appendCssLink();
     hljs.highlightAll();
   }
