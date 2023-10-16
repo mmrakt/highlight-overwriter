@@ -8,8 +8,14 @@ import { FromPopup } from "../config";
 import Header from "../components/Header";
 import SelectboxRow from "../components/SelectboxRow";
 import Button from "../components/Button";
+import { Language, languages, snippets } from "../config/languages";
 
-const Preview = ({ themeName }: { themeName: string }) => {
+type Preview = {
+  themeName: Theme;
+  language: Language;
+};
+
+const Preview = ({ themeName, language }: Preview) => {
   const [themeStyle, setThemeStyle] = useState();
   useEffect(() => {
     const loadThemeStyle = async () => {
@@ -25,35 +31,52 @@ const Preview = ({ themeName }: { themeName: string }) => {
 
     loadThemeStyle();
   });
+  const getSnippet = () => {
+    return (
+      snippets.find((snippet) => snippet.language === language)?.code || ""
+    );
+  };
+  console.log(language, getSnippet());
   return (
-    <SyntaxHighlighter language="javascript" style={themeStyle}>
-      {`const example = 'Hello, world!';\nconsole.log(example);`}
+    <SyntaxHighlighter language={language} style={themeStyle}>
+      {getSnippet()}
     </SyntaxHighlighter>
   );
 };
 
 const SelectTheme = () => {
   const [selectedTheme, setSelectedTheme] = useState<Theme>("");
+  const [selectedPreviewLanguage, setSelectedPreviewLanguage] =
+    useState<Language>("");
   const [isApplying, setIsApplying] = useState(false);
 
   useEffect(() => {
-    getStorage(["themeName"]).then((data: StorageValue) => {
+    getStorage(["themeName", "previewLanguage"]).then((data: StorageValue) => {
       setSelectedTheme(data.themeName as Theme);
+      setSelectedPreviewLanguage(data.previewLanguage as Language);
     });
   }, []);
 
-  const handleChange = (e: any) => {
-    if (e.target.value) {
-      setSelectedTheme(e.target.value);
+  const handleChangeTheme = (e: React.FormEvent<HTMLSelectElement>) => {
+    if (e.currentTarget.value) {
+      setSelectedTheme(e.currentTarget.value as Theme);
+    }
+  };
+  const handleChangeLanguage = (e: React.FormEvent<HTMLSelectElement>) => {
+    if (e.currentTarget.value) {
+      setSelectedPreviewLanguage(e.currentTarget.value as Language);
     }
   };
   const handleApply = () => {
+    if (isApplying) return;
+
     setIsApplying(true);
     setStorage({ themeName: selectedTheme }).then(() => {
       setIsApplying(false);
 
       updateContentPage();
     });
+    setIsApplying(false);
   };
 
   const updateContentPage = () => {
@@ -67,16 +90,22 @@ const SelectTheme = () => {
           labelText="Theme"
           options={themes}
           selectedValue={selectedTheme}
-          handleChange={handleChange}
+          handleChange={handleChangeTheme}
         />
         <SelectboxRow
           labelText="Preview"
-          options={["JavaScript", "PHP", "Python", "Java", "C++"]}
-          // handleChange={handleChange}
+          options={languages}
+          selectedValue={selectedPreviewLanguage}
+          handleChange={handleChangeLanguage}
         />
 
         <div className="flex flex-col mt-4">
-          {selectedTheme && <Preview themeName={selectedTheme} />}
+          {selectedTheme && (
+            <Preview
+              themeName={selectedTheme}
+              language={selectedPreviewLanguage}
+            />
+          )}
         </div>
 
         <div className="self-end mt-2">

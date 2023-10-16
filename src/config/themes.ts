@@ -1,3 +1,5 @@
+import { Language } from "./languages";
+import { Theme } from "./themes";
 export const themes = [
   "a11y-dark",
   "a11y-light",
@@ -75,4 +77,6 @@ export const themes = [
 
 export type Theme = (typeof themes)[number];
 
-export const DEFAULT_THEME_NAME = "monokai";
+export const DEFAULT_THEME_NAME: Theme = "monokai";
+
+export const DEFAULT_PREVIEW_LANGUAGE: Language = "javascript";

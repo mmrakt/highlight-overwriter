@@ -1,10 +1,12 @@
 import { FromContents } from "../config";
 import { Theme } from "../config/themes";
+import { Language } from "../config/languages";
 
 export type StorageValue = {
   themeName: Theme;
   enableSwap: boolean;
   ignoreList: string[];
+  previewLanguage: Language;
 };
 
 export type StorageKey = keyof StorageValue;

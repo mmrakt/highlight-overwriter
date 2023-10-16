@@ -1,9 +1,11 @@
 import { ChangeEvent } from "react";
+import { Language } from "../config/languages";
+import { Theme } from "../config/themes";
 
 type Props = {
   labelText: string;
-  options: string[];
-  handleChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
+  options: Theme[] | Language[];
+  handleChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   selectedValue?: string;
 };
 
