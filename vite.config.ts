@@ -24,7 +24,7 @@ const manifest = defineManifest({
     service_worker: "src/background/main.ts",
     type: "module",
   },
-  permissions: ["storage", "tabs"],
+  permissions: ["storage", "activeTab"],
 });
 
 export default defineConfig({
