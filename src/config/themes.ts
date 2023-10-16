@@ -1,5 +1,4 @@
 import { Language } from "./languages";
-import { Theme } from "./themes";
 export const themes = [
   "a11y-dark",
   "a11y-light",

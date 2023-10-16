@@ -4,7 +4,7 @@ import { Theme } from "../config/themes";
 
 type Props = {
   labelText: string;
-  options: Theme[] | Language[];
+  options: readonly Theme[] | readonly Language[];
   handleChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   selectedValue?: string;
 };
