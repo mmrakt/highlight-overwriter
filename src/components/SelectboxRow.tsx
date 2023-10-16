@@ -22,7 +22,7 @@ const SelectboxRow = ({
       </label>
       <select
         id="syntaxSelect"
-        className="p-1 border rounded w-52"
+        className="p-1 border rounded w-52 background dark:border-zinc-700 focus:outline-primary-lightest"
         onChange={(event) => {
           handleChange(event);
         }}

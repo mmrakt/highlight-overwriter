@@ -5,6 +5,7 @@ import { toIgnoreListOfForm, toIgnoreListOfStorage } from "../utils";
 import { IgnoreList as IgnoreListType } from "../types";
 import { FromPopup } from "../config";
 import Button from "./Button";
+import { twMerge } from "tailwind-merge";
 
 const IgnoreList = () => {
   const [ignoreList, setIgnoreList] = useState<string[] | null>(null);
@@ -31,7 +32,6 @@ const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
     handleSubmit,
     control,
     watch,
-    reset,
     formState: { isDirty },
   } = useForm({
     defaultValues: {
@@ -83,7 +83,11 @@ const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
             <input
               type="text"
               key={field.id}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full px-2 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className={twMerge(
+                "bg-white border-t border-l border-r border-gray-300 dark:border-zinc-700 text-sm block w-full px-2 py-1 dark:bg-zinc-900  dark:placeholder-gray-400 dark:text-white focus:outline-primary-lightest",
+                fields.length === index + 1 && "border-b"
+              )}
+              placeholder="https://foo.com/*"
               {...register(`ignoreList.${index}.value`)}
               onBlur={() => {
                 handleInputBlur(index);

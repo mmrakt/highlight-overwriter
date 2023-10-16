@@ -12,13 +12,13 @@ const Setting = () => {
     });
   }, []);
   const handleChangeEnableSwap = () => {
-    // setEnableSwap(!enableSwap);
-    // setStorage({ enableSwap: !enableSwap });
-    // sendMessageToContents(FromPopup.toggle_enable_swap);
+    setEnableSwap(!enableSwap);
+    setStorage({ enableSwap: !enableSwap });
+    sendMessageToContents(FromPopup.toggle_enable_swap);
   };
 
   return (
-    <div className="w-[350px]">
+    <div className="body">
       <Header />
       <div className=" flex flex-col p-4 space-y-6">
         <div className="flex justify-between">

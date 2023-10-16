@@ -3,7 +3,6 @@ import { themes, Theme } from "../config/themes";
 import { useEffect, useState } from "react";
 import { getStorage, sendMessageToContents, setStorage } from "../utils/chrome";
 import { StorageValue } from "../types";
-import LoadingSpinner from "../components/LoadingSpinner";
 import { FromPopup } from "../config";
 import Header from "../components/Header";
 import SelectboxRow from "../components/SelectboxRow";
@@ -83,7 +82,7 @@ const SelectTheme = () => {
     sendMessageToContents(FromPopup.update_theme);
   };
   return (
-    <div className="w-[350px]">
+    <div className="body">
       <Header />
       <div className="flex flex-col p-4 gap-2">
         <SelectboxRow
