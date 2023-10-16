@@ -84,7 +84,7 @@ const IgnoreListForm = ({ registeredIgnoreList }: Props) => {
               type="text"
               key={field.id}
               className={twMerge(
-                "bg-white border-t border-l border-r border-gray-300 dark:border-zinc-700 text-sm block w-full px-2 py-1 dark:bg-zinc-900  dark:placeholder-gray-400 dark:text-white focus:outline-primary-lightest",
+                "bg-white border-t border-l border-r border-gray-300 dark:border-zinc-700 text-sm block w-full px-2 py-1 background  dark:placeholder-gray-400 dark:text-white focus:outline-primary-lightest",
                 fields.length === index + 1 && "border-b"
               )}
               placeholder="https://foo.com/*"
