@@ -9,3 +9,5 @@ export enum FromContents {
 }
 
 export enum FromServiceWorker {}
+
+export const THEMES_URL_PREFIX = "https://syntax-swap-themes.web.app/";

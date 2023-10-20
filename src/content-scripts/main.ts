@@ -1,6 +1,6 @@
 import hljs from "highlight.js";
 import { getStorage, runtime } from "../utils/chrome";
-import { FromPopup } from "../config";
+import { FromPopup, THEMES_URL_PREFIX } from "../config";
 
 const CSS_LINK_ID = "syntax-swap-style";
 
@@ -14,7 +14,7 @@ const createCssLink = async () => {
 
   const themeName = (await getStorage(["themeName"])).themeName;
 
-  cssLink.href = `http://localhost:5173/styles/${themeName}.css`;
+  cssLink.href = `${THEMES_URL_PREFIX}${themeName}.css`;
   return cssLink;
 };
 

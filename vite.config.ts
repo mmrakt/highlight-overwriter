@@ -29,4 +29,5 @@ const manifest = defineManifest({
 
 export default defineConfig({
   plugins: [react(), crx({ manifest })],
+  publicDir: false,
 });
