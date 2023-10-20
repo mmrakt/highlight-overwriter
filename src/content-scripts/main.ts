@@ -1,6 +1,7 @@
 import hljs from "highlight.js";
 import { getStorage, runtime } from "../utils/chrome";
 import { FromPopup, THEMES_URL_PREFIX } from "../config";
+import { loadThemeStyle } from "../utils";
 
 const CSS_LINK_ID = "syntax-swap-style";
 
@@ -68,11 +69,36 @@ const hasCodeBlock = () => {
   return !!document.querySelector("pre code");
 };
 
+/**
+ * code blockのbackground等を上書きする
+ */
+const prioritizeThemeStyle = async () => {
+  const codeBlockList = document.querySelectorAll(
+    "code.hljs"
+  ) as NodeListOf<HTMLElement>;
+  if (codeBlockList.length !== 0) {
+    const themeName = (await getStorage(["themeName"])).themeName;
+    loadThemeStyle(themeName, (themeStyle) => {
+      const { background, color } = themeStyle.hljs;
+
+      codeBlockList.forEach((codeBlock) => {
+        codeBlock.style.cssText = `background: ${background} !important; color: ${color} !important`;
+
+        const pre = codeBlock.closest("pre");
+        if (pre) {
+          pre.style.cssText = `background: ${background} !important;`;
+        }
+      });
+    });
+  }
+};
+
 const init = async () => {
   const enableSwap = (await getStorage(["enableSwap"])).enableSwap;
   if (enableSwap && !(await isIgnoreSite()) && hasCodeBlock()) {
     appendCssLink();
     hljs.highlightAll();
+    prioritizeThemeStyle();
   }
 };
 
@@ -81,6 +107,7 @@ runtime.onMessage.addListener(async (message: FromPopup) => {
     case "update-theme":
       removeCssLink();
       appendCssLink();
+      prioritizeThemeStyle();
       break;
     case "toggle-enable-swap":
       handleEnableSwap();

@@ -9,6 +9,7 @@ import SelectboxRow from "../components/SelectboxRow";
 import Button from "../components/Button";
 import { Language, languages, snippets } from "../config/languages";
 import Github from "../components/Github";
+import { loadThemeStyle } from "../utils";
 
 type Preview = {
   themeName: Theme;
@@ -16,27 +17,19 @@ type Preview = {
 };
 
 const Preview = ({ themeName, language }: Preview) => {
-  const [themeStyle, setThemeStyle] = useState();
+  const [themeStyle, setThemeStyle] = useState<{
+    [key: string]: React.CSSProperties;
+  } | null>(null);
   useEffect(() => {
-    const loadThemeStyle = async () => {
-      try {
-        const theme = await import(
-          `../../node_modules/react-syntax-highlighter/dist/esm/styles/hljs/${themeName}.js`
-        );
-        setThemeStyle(theme.default);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    loadThemeStyle();
+    loadThemeStyle(themeName, (theme) => setThemeStyle(theme));
   });
   const getSnippet = () => {
     return (
       snippets.find((snippet) => snippet.language === language)?.code || ""
     );
   };
-  console.log(language, getSnippet());
+  if (themeStyle === null) return null;
+
   return (
     <SyntaxHighlighter language={language} style={themeStyle}>
       {getSnippet()}
