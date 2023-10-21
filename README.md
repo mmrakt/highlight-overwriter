@@ -4,7 +4,7 @@
 
 # Syntax Swap
 
-[Chrome Web Store]()
+[Chrome Web Store](https://chrome.google.com/webstore/detail/syntax-swap/amfgpgpncobmcpnleadbkdofcclhmngc)
 
 ## Overview
 
