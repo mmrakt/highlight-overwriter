@@ -7,7 +7,7 @@ const manifest = defineManifest({
   name: "Syntax Swap",
   description:
     "Overwrite the syntax highlighting of code blocks on a web page with your favorite theme",
-  version: "0.1.0",
+  version: "1.0.0",
   icons: {
     "16": "public/img/icon-16.png",
     "48": "public/img/icon-48.png",
