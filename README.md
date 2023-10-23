@@ -8,6 +8,10 @@
 
 ## Overview
 
+![output](https://github.com/mmrakt/syntax-swap/assets/48762864/525e6a43-79d6-44d4-9e51-62fd6d5622df)
+
+
+
 Overwrite the syntax highlighting of code blocks on a web page with your favorite theme.
 
 ## Features
