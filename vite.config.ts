@@ -1,13 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { crx, defineManifest } from "@crxjs/vite-plugin";
+import { version } from "./extension-version.json";
 
 const manifest = defineManifest({
   manifest_version: 3,
   name: "Syntax Swap",
   description:
     "Overwrite the syntax highlighting of code blocks on a web page with your favorite theme",
-  version: "1.0.0",
+  version,
   icons: {
     "16": "public/img/icon-16.png",
     "48": "public/img/icon-48.png",

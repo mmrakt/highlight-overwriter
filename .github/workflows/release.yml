@@ -20,3 +20,4 @@ jobs:
           google_client_id: ${{ secrets.CLIENT_ID }}
           google_client_secret: ${{ secrets.CLIENT_SECRET }}
           refresh_token: ${{ secrets.REFRESH_TOKEN }}
+          manifest_file_path: "extension-version.json"
